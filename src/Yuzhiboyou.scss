@@ -1,0 +1,253 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+body {
+	line-height: 1.4;
+	font-weight: 420;
+	font-family: 'DM Sans', sans-serif;
+	background-color: #0f0f0f;
+	color: #e4dcdc;
+}
+
+main {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 2rem;
+	display: grid;
+	gap: 2rem;
+}
+img {
+	display: block;
+	max-width: 100%;
+	height: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: white;
+	font-weight: 700;
+}
+text {
+	font-size: small;
+}
+
+a {
+	color: #9f4941;
+	text-decoration: none;
+	padding-left: 0.2rem;
+	display: block;
+	position: relative;
+	transition: padding-left 0.2s ease, color 0.2s ease;
+}
+a::before {
+	content: '>';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	opacity: 0;
+	color: white;
+	transition: opacity 0.2s ease;
+}
+a:hover {
+	color: hotpink;
+	padding-left: 1.2rem;
+}
+a:hover::before {
+	opacity: 1;
+}
+small {
+	font-size: 80%;
+}
+h1 {
+	font-size: 3rem;
+}
+
+h2 {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+}
+
+footer {
+	margin: 0 auto;
+	max-width: 1000px;
+	padding: 0.5rem 2rem;
+	font-size: 2rem;
+}
+
+.card {
+	padding: 1.5rem;
+	border-radius: 2rem;
+	position: relative;
+	box-shadow: -1px -1px 1px rgba(255, 255, 255, 0.1);
+	overflow: hidden;
+	animation: entry 1s ease;
+}
+.card::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+	opacity: 0.25;
+	border-radius: 2rem;
+}
+
+@media (min-width: 768px) {
+	main {
+		grid-template-columns: 320px 1fr;
+	}
+}
+
+.profile .card {
+	position: sticky;
+	top: 2rem;
+}
+.reflection-container img {
+	border: 1px solid #444;
+	background-color: #333;
+	border-radius: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.profile a + a {
+	margin-top: 0.25rem;
+}
+
+.block + .block {
+	margin-top: 1rem;
+}
+
+.block ul {
+	font-weight: 300;
+}
+.block p {
+	color: white;
+}
+
+h3 {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+}
+h4 {
+	font-size: 1.25rem;
+	margin-bottom: 0.5rem;
+}
+ul li + li p + p,
+p + ul {
+	margin-top: 0.5rem;
+}
+
+ul {
+	padding-left: 1rem;
+	list-style-type: disclosure-closed;
+}
+.info .card + .card {
+	margin-top: 2rem;
+}
+
+ul.pills {
+	list-style-type: none;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 0.5rem;
+	align-items: baseline;
+}
+
+ul.pills > li {
+	background-color: #534f4f;
+	border-radius: 1rem;
+	padding: 0.25rem 0.75rem;
+	color: white;
+	font-size: 0.8rem;
+	display: block;
+}
+
+.info .card::after {
+	content: '';
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 4rem 4rem 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.info .card.red::after {
+	border-color: transparent red transparent transparent;
+}
+
+.info .card.orange::after {
+	border-color: transparent orange transparent transparent;
+}
+.info .card.pink::after {
+	border-color: transparent pink transparent transparent;
+}
+.info .card.green::after {
+	border-color: transparent limegreen transparent transparent;
+}
+
+.info .card.teal::after {
+	border-color: transparent turquoise transparent transparent;
+}
+
+@keyframes entry {
+	from {
+		transform: scale(0.5);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+.reflection-container {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	transform-style: preserve-3d;
+	perspective: 1000px;
+	height: 100%;
+
+	.reflection-content {
+		height: 50vh;
+		width: 100%;
+		background-size: cover;
+		background-position: center;
+		transform: rotateX(0) rotateY(0);
+		pointer-events: none;
+		transition: 100ms linear transform;
+		overflow: hidden;
+	}
+	.reflection-grid-cell {
+		position: absolute;
+		z-index: 1;
+		width: 10%;
+		height: 10%;
+	}
+	@for $r from 1 to 11 {
+		@for $c from 1 to 11 {
+			.reflection-grid-cell-#{( ($r*10) + $c - 10)} {
+				top: ($r * 10%)-10%;
+				left: ($c * 10%)-10%;
+			}
+			.reflection-grid-cell-#{( ($r*10) + $c - 10)}:hover ~ .reflection-content {
+				transform: rotateX((($r * -5)+45deg)) rotateY((-45deg+ ($c * 5)));
+				&:before {
+					transform: translateY(45-(5% * $r));
+				}
+			}
+		}
+	}
+}
